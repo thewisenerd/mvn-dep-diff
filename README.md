@@ -2,7 +2,7 @@
 --------------
 
 a stupid tool that copies [@JakeWharton/dependency-tree-diff](https://github.com/JakeWharton/dependency-tree-diff) that
-is for gradle for maven
+is for gradle for maven. something like this probably already exists but i am not aware of the same.
 
 
 ### use-case
