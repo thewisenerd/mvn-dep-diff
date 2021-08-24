@@ -1,12 +1,10 @@
 # mvn-dep-diff
---------------
 
 a stupid tool that copies [@JakeWharton/dependency-tree-diff](https://github.com/JakeWharton/dependency-tree-diff) that
 is for gradle for maven. something like this probably already exists but i am not aware of the same.
 
 
 ### use-case
-------------
 
 - you want to add a dependency to your project
 - you do not know what dependent versions need to be updated (pre-dependency-addition)
@@ -41,14 +39,12 @@ is for gradle for maven. something like this probably already exists but i am no
 ```
 
 ### todo
---------
 
 - code clean up
 - any downgrades in scope (eg., from `compile` to `test`) can likely be outright ignored
 
 
 ### goals
----------
 
 - web interface? the core logic is simple enough
 - change language; write in kotlin-native so i can kang this onto a web interface
