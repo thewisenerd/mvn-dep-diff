@@ -2,14 +2,16 @@
 
 import os
 import sys
+from typing import Optional
 
 # dcd
 
-def read_file(filename):
+def read_file(filename: str) -> list[str]:
     with open(filename) as f:
         contents = [x.rstrip() for x in f.readlines()]
     return contents
 
+NodeKey = tuple[str, str]
 class Node:
     def __init__(self, line) -> None:
         idx = 0
@@ -40,17 +42,17 @@ class Node:
         self.version = m_version
         self.scope = m_scope
 
-    def format(self):
+    def format(self) -> str:
         if self.os is not None:
             vstr = '{}:{}:{}:{}:{}:{}'.format(self.group, self.artifact, self.type, self.os, self.version, self.scope)
         else:
             vstr = '{}:{}:{}:{}:{}'.format(self.group, self.artifact, self.type, self.version, self.scope)
         return vstr
     
-    def key(self):
+    def key(self) -> NodeKey:
         return (self.group, self.artifact)
 
-def read_lib(line: str):
+def read_lib(line: str) -> Optional[Node]:
     if len(line) == 0:
         return None
     
@@ -60,11 +62,11 @@ def read_lib(line: str):
 
     return Node(line)
 
-def main(base_file, dep_addition_file):
+def main(base_file: str, dep_addition_file: str):
     base = read_file(base_file)
     dep = read_file(dep_addition_file)
 
-    new_versions = {}
+    new_versions: dict[NodeKey, Node] = {}
 
     # start reading dep_file
     for line in dep:
@@ -83,13 +85,18 @@ def main(base_file, dep_addition_file):
         else:
             ver_delta = False
             if lib.key() in new_versions:
-                e_lib = new_versions[lib.key()]
-                if lib.version != e_lib.version:
+                dep_lib = new_versions[lib.key()]
+                if lib.version != dep_lib.version:
                     ver_delta = True
+
+                    # haha hack.
+                    if dep_lib.scope == 'test':
+                        if lib.scope == 'compile':
+                            ver_delta = False
             
             if ver_delta:
                 print('-{}'.format(line))
-                print('+{}{}'.format(lib.prefix, e_lib.format()))
+                print('+{}{}'.format(lib.prefix, dep_lib.format()))
             else:
                 print(' {}'.format(line))
 
