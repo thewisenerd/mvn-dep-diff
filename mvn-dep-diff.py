@@ -57,7 +57,7 @@ def read_lib(line: str) -> Optional[Node]:
         return None
     
     first_char = line[0]
-    if first_char not in ['+', '\\', '|']:
+    if first_char.isalpha():
         return None
 
     return Node(line)
