@@ -22,7 +22,11 @@ class Node:
             raise Exception('expected lib, found nothing, for {}'.format(line))
 
         self.prefix = line[0:idx]
-        vstr = line[idx:]
+        self.suffix = ''
+        vstr_all = line[idx:].split(' ')
+        if len(vstr_all) > 1:
+            self.suffix = ' ' + ' '.join(vstr_all[1:])
+        vstr = vstr_all[0]
         split = vstr.split(':')
 
         self.os = None
@@ -96,7 +100,7 @@ def main(base_file: str, dep_addition_file: str):
             
             if ver_delta:
                 print('-{}'.format(line))
-                print('+{}{}'.format(lib.prefix, dep_lib.format()))
+                print('+{}{}{}'.format(lib.prefix, dep_lib.format(), lib.suffix))
             else:
                 print(' {}'.format(line))
 
